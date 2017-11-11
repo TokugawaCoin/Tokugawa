@@ -94,14 +94,7 @@ STEP 3 : Configuring masternodes
 2 - Open "Tokugawa.conf" in Notepad
 3 - Type there:
 
-rpcuser=ANYTHINGHERE
-rpcpassword=ANYTHINGHERE
-listen=1
-allowip=127.0.0.1
-port=12116
-masternode=1
-masternodeaddr=145.239.39.141:21117
-masternodeprivkey=PRIVATEKEYREPLACETHIS
+port=PORT masternode=1 masternodeaddr=IP:PORT masternodeprivkey=PRIVKEY
 
 4 - Replace PORT with port for your Masternode 1, IP:PORT with your external white ip and the same port for you Masternode 1
 5 - Replace PRIVKEY with masternode private key you generated with "masternode genkey" in controller wallet for Masternode 1
@@ -111,7 +104,9 @@ STEP 4 : Starting masternodes
 1 - Now you can restart all your masternodes by executing the file "startmn1.cmd", "startmn2.cmd" and "startmn3.cmd"
 2 - Go to controller wallet, check that your coins in Masternode 1, 2 and 3 addresses have at least 15 confirmations.
 3 - Go to Masternodes tab and switch to the "My Masternodes"
-4 –Press "Start All"
+4 – Make sure wallet is encrypted
+5 - After this, unlock wallet for Staking only so that you get Masternode rewards as well as staking rewards
+6 - Start Masternode by presssing "Start All"
 Thats all folks. You have created 3 working masternodes. Don't be afraid to run PoS(Staking as well as Masternode) on controller wallet. It does not damage your masternode transactions because all masternode coins will be excluded from PoS/staking.
 
 
