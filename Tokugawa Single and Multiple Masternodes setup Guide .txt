@@ -13,7 +13,7 @@ rpcuser=ANYTHINGHERE
 rpcpassword=ANYTHINGHERE
 listen=1
 allowip=127.0.0.1
-port=12116
+port=21117
 masternode=1
 masternodeaddr=145.239.39.141:21117
 masternodeprivkey=PRIVATEKEYREPLACETHIS
@@ -94,7 +94,7 @@ STEP 3 : Configuring masternodes
 2 - Open "Tokugawa.conf" in Notepad
 3 - Type there:
 
-port=PORT masternode=1 masternodeaddr=IP:PORT masternodeprivkey=PRIVKEY
+port=21117 masternode=1 masternodeaddr=IP:PORT masternodeprivkey=PRIVKEY
 
 4 - Replace PORT with port for your Masternode 1, IP:PORT with your external white ip and the same port for you Masternode 1
 5 - Replace PRIVKEY with masternode private key you generated with "masternode genkey" in controller wallet for Masternode 1
