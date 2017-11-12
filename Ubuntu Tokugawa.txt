@@ -1,0 +1,132 @@
+
+Compiling Control Wallet Tokugawa Masternode Coin -- Ubuntu 14.04 Reuired For linux.
+Not compatible with Ubuntu 16.04
+---------------------------------
+
+Once you purchased a fresh VPS Ubuntu 14.04 Server,
+
+Start by copy-pasting the following commands one by one:
+(in the console you paste using right click-enter).
+
+Do these steps as a root
+
+sudo apt-get update
+
+apt-get upgrade
+
+
+Install Essentials:
+------------------
+sudo apt-get install build-essential libtool autotools-dev pkg-config libssl-dev libboost-all-dev autoconf automake libdb4.8 libdb4.8-dev libdb4.8++-dev
+
+
+Install libsecp256k1 as a root:
+--------------------
+sudo apt-get install git
+git clone https://github.com/bitcoin-core/secp256k1
+cd ~/secp256k1
+./autogen.sh
+./configure
+make
+./tests
+sudo make install  # optional
+
+Install libgmp:
+---------------
+sudo apt-get install libgmp-dev 
+
+Install Openssl:
+---------------
+sudo apt-get install openssl
+
+Berkeley:
+---------------------
+sudo apt-get install software-properties-common
+
+
+
+
+sudo add-apt-repository ppa:bitcoin/bitcoin
+
+
+sudo apt-get install libdb4.8-dev libdb4.8++-dev
+
+new messages
+
+
+
+Swap Memory For Memory Allocation:
+----------
+sudo dd if=/dev/zero of=/var/swap.img bs=1024k count=1000
+sudo mkswap /var/swap.img
+sudo swapon /var/swap.img
+sudo chmod 0600 /var/swap.img
+sudo chown root:root /var/swap.img
+sudo nano /etc/fstab 
+ 
+----Note Edit as Nano-----
+/var/swap.img none swap sw 0 0
+
+##(Save and exit)
+
+cd ~
+git clone https://tokugawacoin/tokugawa.git
+cd ~/Tokugawacoin/src
+make -f makefile.unix # Headless
+
+---Note edit as nano------
+
+nano ~/.Tokugawa/Tokugawa.conf
+
+##navigate and edit the file to make it look like this:
+##(Change username and password)
+
+rpcuser=yourusername
+
+rpcpassword=yourpassword
+
+
+
+
+rpcallowip=127.0.0.1
+
+
+
+
+daemon=1
+server=1
+
+
+listen=1
+
+
+##(Save And Exit)
+
+
+cd ~/Tokugawacoin/src
+
+To run Control Wallet do this 
+./Tokugawad
+
+You should see server starting
+
+To check the status of your masternode, 
+
+./Tokugawad getinfo 
+
+
+Once the blocks number is the same that you can see in the help-debug window-information of your synced local wallet, or on the block explorer, it means your vps wallet is synced.
+
+Restart your local wallet and go to masternodes. Press Update.
+
+If you did the procedure to setup your local wallet, you should see your masternode with it's - alias - ID:Port - % - Reward address, so you can start it.
+
+You should see masternode is running!
+
+You can check status in the local console by typing masternode status
+
+If you get "status" : 1 it's all good!
+
+
+Enjoy !  
+
