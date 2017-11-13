@@ -56,58 +56,26 @@ echo start Tokugawa-mn1.exe -datadir=./data > %homepath%/Desktop/startmn1.cmd
 11 - Run startmn1.cmd, startmn2.cmd and startmn3.cmd, wait for complete loading wallets and complete syncing with blockchain
 12 - Now you can exit from each running masternode wallets
 
-STEP 2 : Preparing controller wallet
-1 - Open your main wallet where you have your coins
-2 - Go to Receive tab
-3 - Press button "New address" and enter "Masternode 1" in Label (do not check "Stealth address")
-4 - Press button "New address" and enter "Masternode 2" in Label (do not check "Stealth address")
-5 - Press button "New address" and enter "Masternode 3" in Label (do not check "Stealth address")
-4 - Send to all this address exactly 2500 Tokugawa by one transaction. This can be done by going to Send button and clicking on add recipient two times. And fill all 3 address on pay to and 2500 as amount.
- 
+Now you can follow the same steps of single masternode guide
+4.Go to Help -> Debug Console.
+5.In the Console window enter getaccountaddress 0 and copy the result. This is your MASTERNODE DEPOSIT ADDRESS, where you will deposit the coins to create a masternode. Pay 2500 Tokugawa exactly into this address. No more, no less.
+-·Wait for the 1 confirmation of the transaction.
+6.In the Console Debug window enter masternode genkey and copy the result. This is your MASTERNODE PRIVKEY.
+7.Open Configuration File in Notepad. This config file is located at C:/users/***Your windows username***/appdata(hidden)/roaming/Tokugawa  Then paste in the following.
 
-5 - Wait for 1 confirmation of transaction and go to the Debug console
-6 - Run command "masternode genkey" and write down generated key (this is your masternode private key)
-7 - Run command "masternode outputs" and write down hexnumbers (this is your masternode tx) and digit after ":" (this is tx index)
-You will get 3 output like 
-{
-    "60835a7d867d335434925c32f38902268e131e99a5821557d3e77f8ca3829fd8" : "0",
-    "60835a7d867d335434925c32f38902268e131e99a5821557d3e77f8ca3829fd8" : "1",
-    "60835a7d867d335434925c32f38902268e131e99a5821557d3e77f8ca3829fd8" : "2"
-}
-8 - Go to Masternodes tab and switch to the "My Masternodes"
-9 - Press button "Create"
-10 - Enter "Alias" - "MN1" (do not use spaces and special charatcers)
-11 - Enter "Address" - "YOUREXTERNALIP:PORT" (your external white ip and port for masternode)
-12 - Enter "Privkey" - masternode private key you generated with "masternode genkey"
-13 - Enter "TxHash" - masternode tx from "masternode outputs" command
-14 - Enter "Output Index" - tx index from "masternode outputs" command
-15 - Now you can press "Ok"
-16 - Repeat process from step 6 for MN2 and MN3. With renaming MN1 to MN2 and MN3 and changing port
-When you get to step 7 "masternode outputs" in second time you will see 2 lines with txhash and index. You must choose the First line with txhash for MN1 second for MN2 third for MN3.
-17 - Press "Update" and you will see all three masternodes in list with status "Not in the masternode list."
-Steps 8-15 creates masternode.conf. You can skip this steps and create it by yourself. It have format:
+rpcuser=ANYTHINGHERE
+rpcpassword=ANYTHINGHERE
+listen=1
+allowip=127.0.0.1
+port=21117
+masternode=1
+masternodeaddr=YOUR-IP:21117
+masternodeprivkey=PRIVATEKEYREPLACETHIS
 
-ALIAS IP:PORT PRIVKEY TXHASH OUTPUTINDEX One line - one masternode config
-
-STEP 3 : Configuring masternodes
-1 - Go to "TokugawaMN1/data" folder
-2 - Open "Tokugawa.conf" in Notepad
-3 - Type there:
-
-port=21117 masternode=1 masternodeaddr=IP:PORT masternodeprivkey=PRIVKEY
-
-4 - Replace PORT with port for your Masternode 1, IP:PORT with your external white ip and the same port for you Masternode 1
-5 - Replace PRIVKEY with masternode private key you generated with "masternode genkey" in controller wallet for Masternode 1
-6 - Save it and repeat process for Masternode 2 and Masternode 3.
-
-STEP 4 : Starting masternodes
-1 - Now you can restart all your masternodes by executing the file "startmn1.cmd", "startmn2.cmd" and "startmn3.cmd"
-2 - Go to controller wallet, check that your coins in Masternode 1, 2 and 3 addresses have at least 15 confirmations.
-3 - Go to Masternodes tab and switch to the "My Masternodes"
-4 – Make sure wallet is encrypted
-5 - After this, unlock wallet for Staking only so that you get Masternode rewards as well as staking rewards
-6 - Start Masternode by presssing "Start All"
-Thats all folks. You have created 3 working masternodes. Don't be afraid to run PoS(Staking as well as Masternode) on controller wallet. It does not damage your masternode transactions because all masternode coins will be excluded from PoS/staking.
-
-
-
+8.Now save and close the config file.
+9.Close the wallet by going to File -> Exit.
+Open the Tokugawa Wallet again by running Tokugawa-qt.exe. This is how you will always start the wallet going forward.
+10. Wait for 15 confirmations of the transaction of 2500 coins.
+Go to Tools -> Debug Console. Enter masternode start. You will see the response “Masternode started successfully”. Congratulations, your masternode is now running.
+Now click the Masternodes tab that is now visible. You should see your new masternode appear in the list with the status PRE_ENABLE.
+This will change to ENABLED after a small amount of time. All masternodes need to be active for a certain amount of blocks before they are recognized by the network and eligible for rewards.
