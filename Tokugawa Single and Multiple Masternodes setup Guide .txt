@@ -15,7 +15,7 @@ listen=1
 allowip=127.0.0.1
 port=21117
 masternode=1
-masternodeaddr=145.239.39.141:21117
+masternodeaddr=YourIP:21117
 masternodeprivkey=PRIVATEKEYREPLACETHIS
 
 
