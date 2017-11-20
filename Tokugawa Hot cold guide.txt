@@ -1,238 +1,71 @@
-v2.1
--------------------------------------------------------------------------------------------
-This is a step by step procedure to setup a Tokugawa Coin Hot-Cold VPS Masternode on Windows.
--------------------------------------------------------------------------------------------
+Compiling Control Wallet Tokugawa Masternode Coin -- Ubuntu 14.04 Reuired For linux.
+Not compatible with Ubuntu 16.04
+---------------------------------
 
-We will be setting up two masternode wallets:
+Once you purchased a fresh VPS Ubuntu 14.04 Server,
 
-1- One wallet is installed remotely on the VPS, it will not have funds in it, so it considered cold.
-2- One wallet is installed locally on your windows computer, it will have the funds in it, so it is considered hot. This acts as a proof that you own the funds, and as a remote control.
+Start by copy-pasting the following commands one by one:
+(in the console you paste using right click-enter).
 
-After the install, you can shut down your local wallet anytime, and the remote wallet will continue working 24/7, and it will be sending your rewards to your local wallet.
-
-For this to work, you will need to rent a VPS, like at scaleway.com or vultur.com
-The least expensive will do. (2-5$ per month)
-I used Ubuntu Trusty 14.04 for this setup.
-Once you have rented your VPS and you know your remote IP, you need to learn how to secure it, 
-I prefer Bitvise https://www.bitvise.com/ssh-client-download
-You can find info how to secure your VPS with Bitvise here https://www.bitvise.com/getting-started Or elsewhere on the web.
-
------------------------
-The Local wallet Setup:
------------------------
-
-First Download the TokugawaCoin from the official website: https://www.Tokugawacoin.org/
-Go to wallet, windows.
-
-Once installed you should Encrypt the wallet, and keep your password safe.
-Then Backup your encrypted wallet to a safe place.
-
-Now let the wallet sync. If it does not sync you can close and try again.
-
-Open yourself a new notepad textfile to paste all your informations for future use.
-
-What you are searching for is these informations:
-
-Masternode deposit address:
-Masternode private key:
-Remote IP address:
-Port:12116
-Valid 2500 TOK Transaction Hash:
-Valid 2500 TOK Transaction Index:
-
-To find those infos, 
-Go to Help -> Debug Window and Select The Console Tab
-
-In the Console window bottom field, type getaccountaddress 0 and copy the result to your notepad.
-This is your MASTERNODE DEPOSIT ADDRESS, where you will deposit the coins to create a masternode. Pay 2500 Tokugawa exactly into this address. No more, no less.
-If you were sent more or less than 2500 TOK, send exactly 2500 to yourself so you have a valid transaction.
-You need 15 confirmations on your valid tx to start your masternode.
-
-In the Console Debug window enter “masternode genkey” and copy the result to your notepad.
-This is your MASTERNODE PRIVKEY. 
-
-Now we need to open the local wallet configuration file, it's in a hidden folder on your roaming folder on your computer, so to access it:
-
-Press once on the windows key on the bottom left of the keyboard, the type directly %appdata% and press enter.
-
-It should open your roaming folder where you can find the Tokugawa folder
-
-Enter the Tokugawa Folder and double click on Tokugawa.conf
-
-It should open the file in Notepad. Then paste these lines:
-
-masternode=1
-rpcuser=		(yourusername)
-rpcpassword=		(yourlongpassword)
-masternodeprivkey=	(your local masternode private key)
-masternodeaddr=		(IP:Port)
-
-
-Go back to your Notepad and copy-paste your private key after the equals sign of “masternodeprivkey=”.
-Paste the IP and PORT after masternodeaddr=   (example 23.34.32.220:12116)  
-IP is your remote VPS IP Address, Port for this coin is 12116  
-Now save and close the Tokugawa.conf file.
-
-One thing done.
-
-Now we need to find the Valid transaction proof:  
-(You need to have already made your exact 2500 transaction, and have the wallet unlocked sync, and 15 confirmations for this).
-
-Go to the help, debug window, console.
-
-Type masternode outputs
-
-You will get only empty {} if your transaction did not work properly.
-If you have a valid transaction you will get something like this:
-
-{
-    "9876235987jkghfkjashogfre987634259876342oiuyfihg98762135" : "0"
-}
-
-This is your "VALID TRANSACTION HASH" followed by your "TRANSACTION INDEX"
-
-Copy-paste the long string in your notepad (without all the extra caracters {  : ")    that is your Tx Hash.
-Then copy-paste to your notepad the alone number (0 or 1), that is called the Index.
-
-
-We are now ready to create the masternode:
-
-Go to the local wallet, masternode tab, click create.
-
-Fill in the fields:
-
-Alias: 		(name of your masternode)
-Address:	(IP:Port  example 23.34.32.220:12116)  IP is your remote VPS IP Address, Port for this coin is 12116 
-PrivKey:	Your masternode private key
-TxHash:		Your valid Transaction hash, (the long string clean without the extra stuff)
-Output Index:	Your valid transaction index (0 or 1)
-Reward Address: Your TokugawaCoin Address
-Reward:		I put 100%
-
-click ok,
-
-Close the wallet by going to File -> Exit.
-
-It should have created a file in your %appdata% roaming folder-Tokugawa called masternode.conf
-
-You can open it to check (Optional)
-
-In there you should have just one long string with all your infos one after the others:
-
-	Alias Address:Port PrivKey TxHash Index RewardAdress %
-
-Now you know where to find it.
-
-Open the Tokugawa Wallet again by running Tokugawa-qt.exe.
-
-The Local side is done, now we need to setup the VPS:
-
-
-------------------------------------------------
-Setting up the remote TokugawaCoin Wallet On VPS 
-------------------------------------------------
-
-* This is based on Crave's masternode setup by clif-on-crypto on steemit: 
-https://steemit.com/crave/@cliff-on-crypto/how-to-setup-your-crave-masternode-on-vps-with-video-tutorial
-
-Once you purchased a fresh VPS with Ubuntu 14.04, and you are connected to it with Bitvise or similar software:
-
-We will be copy-pasting commands one by one in the VPS console:
-
-(in Ubuntu console you paste using right click-enter. Ctrl-C and Ctrl-V doesn't work. Selection automatically copies to clipboard also).
-
-
-Starting and Updating Ubuntu:
-
-(Copy paste these commands):
+Do these steps as a root
 
 sudo apt-get update
 
 apt-get upgrade
 
-(press enter to continue when asked)
+Install Essentials:
+------------------
+sudo apt-get install build-essential libtool autotools-dev pkg-config libssl-dev libboost-all-dev autoconf automake libdb4.8 libdb4.8-dev libdb4.8++-dev
 
+Install libsecp256k1 as a root:
+--------------------
+sudo apt-get install git
+git clone https://github.com/bitcoin-core/secp256k1
+cd ~/secp256k1
+./autogen.sh
+./configure
+make
+./tests
+sudo make install  # optional
 
-If you want more security you can create a new user (optional but recommended):
+Install libgmp:
+---------------
+sudo apt-get install libgmp-dev 
 
-adduser newUsername
-usermod -aG sudo newUsername
+Install Openssl:
+---------------
+sudo apt-get install openssl
 
-(Return to your ssh client and log in again with this new user).
+Berkeley:
+---------------------
+sudo apt-get install software-properties-common
 
+sudo add-apt-repository ppa:bitcoin/bitcoin
 
-Step 2: Making swapfile:
+sudo apt-get install libdb4.8-dev libdb4.8++-dev
 
+new messages
+
+Swap Memory For Memory Allocation:
+----------
 sudo dd if=/dev/zero of=/var/swap.img bs=1024k count=1000
 sudo mkswap /var/swap.img
 sudo swapon /var/swap.img
-
-
-To make the swap file persist after rebooted:
-
 sudo chmod 0600 /var/swap.img
 sudo chown root:root /var/swap.img
-sudo nano /etc/fstab
-
-Append the following line to the end of the file:
-
+sudo nano /etc/fstab 
+ 
+----Note Edit as Nano-----
 /var/swap.img none swap sw 0 0
 
-Save the file and exit
+##(Save and exit)
 
-Step 3: Firewall ( can do this step at anytime )
+cd ~
+git clone https://github.com/TokugawaCoin/Tokugawa
+cd ~/Tokugawa/src
+make -f makefile.unix # Headless
 
-sudo apt-get ufw
-sudo ufw allow OpenSSH
-sudo ufw allow 12116
-sudo ufw default deny incoming
-sudo ufw default allow outgoing
-sudo ufw enable
-
-Step 4 : Compiling the wallet
-
-sudo apt-get install git
-git clone https://github.com/tokugawacoin/tokugawa.git
-
-Step 5: You need to install dependencies
-
-sudo apt-get -y update && sudo apt-get -y install build-essential libssl-dev libdb++-dev libboost-all-dev libcrypto++-dev libqrencode-dev libminiupnpc-dev libgmp-dev libgmp3-dev autoconf autogen automake libtool
-
-cd ~/Tokugawacoin/src
-make -f makefile.unix
-
-(this step takes a while, make sure it does not give you an error message at the end)
-
-
-* -Optional-
-*
-* Once completed, to see if the wallet is ready you can type:
-
-* ls
-
-* If you have the file called Harvesd in the list, that is your VPS wallet.
-
-* If you want to see the different functions of your wallet you can type:
-
-* ./Tokugawad help 
-
-* -This was optional, only to help in case of problems or if you are curious-
-
-
-
-
-Step 6: Now you can Start your VPS masternode:
-
-
-./Tokugawad
-
-(It should say   - It is recommended you use the following random password:   etc...
-
-And exit normally, it wants you to set a user and password in the file ~/.Tokugawa/Tokugawa.conf
-You can use the password it suggests, or use another one you choose.
-
-
-Step 7: Editing Tokugawa.conf to set user and password (Note edit as nano)
+---Note edit as nano------
 
 nano ~/.Tokugawa/Tokugawa.conf
 
@@ -240,45 +73,40 @@ nano ~/.Tokugawa/Tokugawa.conf
 ##(Change username and password)
 
 rpcuser=yourusername
-
-rpcpassword=yourlongandverysecurepassword
-
+rpcpassword=yourpassword
 rpcallowip=127.0.0.1
-
 daemon=1
 server=1
 listen=1
+masternodeaddr=x.x.x.x:21117
+masternode=1
+masternodeprivkey=privatekey
 
 ##(Save And Exit)
 
 
-Let's Start the server again:
+cd ~/Tokugawa/src
 
-
+To run Control Wallet do this 
 ./Tokugawad
 
-You should see server starting, and let it sync for a while.
+You should see server starting
 
 To check the status of your masternode, 
 
-
-Press enter to get command line active if it's not
 ./Tokugawad getinfo 
 
 
-Once the blocks number is the same that you can see in the help-debug window-information of your synced local wallet, or on the block explorer, it means your vps wallet is synced.
+Once the block number is the same that you can see in the help-debug window-information of your synced local wallet, or on the block explorer, it means your vps wallet is synced.
 
 Restart your local wallet and go to masternodes. Press Update.
 
 If you did the procedure to setup your local wallet, you should see your masternode with it's - alias - ID:Port - % - Reward address, so you can start it.
 
-You should see "masternode is running!"
+You should see masternode is running!
 
 You can check status in the local console by typing masternode status
 
-If you get "status" : 1 it's all good! You don't need to keep you local open now.
+If you get "status" : 1 it's all good!
 
-If it's not working i suggest you go to the TokugawaCoin slack to ask for help https://Tokugawamasternodecoin.slack.com
-
-Enjoy your rewards !  
-
+Enjoy !
