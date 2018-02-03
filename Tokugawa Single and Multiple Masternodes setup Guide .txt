@@ -11,8 +11,12 @@ MASTERNODE GUIDE FOR WINDOWS
 
 rpcuser=ANYTHINGHERE
 rpcpassword=ANYTHINGHERE
+rpcallowip=127.0.0.1
+externalip=your_vps_ip_address
+rpcport=21117
 listen=1
-allowip=127.0.0.1
+server=1
+daemon=1
 port=21117
 masternode=1
 masternodeaddr=YourIP:21117
@@ -65,11 +69,15 @@ Now you can follow the same steps of single masternode guide
 
 rpcuser=ANYTHINGHERE
 rpcpassword=ANYTHINGHERE
+rpcallowip=127.0.0.1
+externalip=your_vps_ip_address
+rpcport=21117
 listen=1
-allowip=127.0.0.1
+server=1
+daemon=1
 port=21117
 masternode=1
-masternodeaddr=YOUR-IP:21117
+masternodeaddr=YourIP:21117
 masternodeprivkey=PRIVATEKEYREPLACETHIS
 
 8.Now save and close the config file.
