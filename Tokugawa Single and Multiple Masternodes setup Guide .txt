@@ -1,88 +1,50 @@
 MASTERNODE GUIDE FOR WINDOWS
 
+It is strongly recommended to use a VPS and not your home computer to make masternodes. This way you get better rewards. You can buy these from pivps.com (this site is not owned by us, it is just recommended here)
+
 1.Open and Run the Tokugawa-qt.exe wallet for the first time.  
 2.Your firewall and antivirus might pop up to allow connection. Please allow the connections by making appropriate tick marks.
 3.In the lower left hand corner of the User Interface, you will see “Synchronizing with network” and other sync messages each time you open your Tokugawa Wallet. If there is a problem synchronizing, it may say “No Block Source Available” instead. If this happens, just close and re-open the wallet until it synchronizes. 
 4.Go to Help -> Debug Console.
-5.In the Console window enter getaccountaddress 0 and copy the result. This is your MASTERNODE DEPOSIT ADDRESS, where you will deposit the coins to create a masternode. Pay 2500 Tokugawa exactly into this address. No more, no less.
--·Wait for the 1 confirmation of the transaction.
+5.In the Console window enter getaccountaddress mn1 and copy the result. This is your MASTERNODE DEPOSIT ADDRESS, where you will deposit the coins to create a masternode. Pay 10000 Tokugawa exactly into this address. No more, no less.
+-·Wait for the 15 confirmations of the transaction.
 6.In the Console Debug window enter masternode genkey and copy the result. This is your MASTERNODE PRIVKEY.
-7.Open Configuration File in Notepad. This config file is located at C:/users/***Your windows username***/appdata(hidden)/roaming/Tokugawa  Then paste in the following.
+Also type in the console the command masternode outputs. This is your MASTERNODE Transaction ID, you will need it later.
+7.Open Tokugawa.conf file in Notepad. This config file is located at C:/users/***Your windows username***/appdata(hidden)/roaming/Tokugawa core. Then paste in the following.
 
 rpcuser=ANYTHINGHERE
 rpcpassword=ANYTHINGHERE
 rpcallowip=127.0.0.1
 externalip=your_vps_ip_address
-rpcport=21117
+rpcport=7119
 listen=1
 server=1
 daemon=1
 port=21117
 masternode=1
-masternodeaddr=YourIP:21117
+masternodeaddr=YourIP:7119
 masternodeprivkey=PRIVATEKEYREPLACETHIS
 
+8. Open Masternode.conf file and write in it a few lines in this format:
 
-8.Now save and close the config file.
-9.Close the wallet by going to File -> Exit.
+This is Format: alias IP:port masternodeprivkey collateral_output_txid collateral_output_index
+# Example: mn1 127.0.0.2:7119 93HaYBVUCYjEMeeH1Y4sBGLALQZE1Yc1K64xiqgX37tGBDQL8Xg 2bcd3c84c84f87eaa86e4e56834c92927a07f9e18718810b92e0d0324456a67c 0
+
+9.Now save and close the Tokugawa.conf and Masternode.conf file.
+10.Close the wallet by going to File -> Exit.
 Open the Tokugawa Wallet again by running Tokugawa-qt.exe. This is how you will always start the wallet going forward.
-10. Wait for 15 confirmations of the transaction of 2500 coins.
-Go to Tools -> Debug Console. Enter masternode start. You will see the response “Masternode started successfully”. Congratulations, your masternode is now running.
-Now click the Masternodes tab that is now visible. You should see your new masternode appear in the list with the status PRE_ENABLE.
-This will change to ENABLED after a small amount of time. All masternodes need to be active for a certain amount of blocks before they are recognized by the network and eligible for rewards.
+11. Wait for 15 confirmations of the transaction of 10000 coins.
+Go to Masternode section, here you will see your new masternode waiting to be started. You should right click on the masternode and click on start alias
+You will see the response “Started successfully 1 Masternode”. You will see it as enabled in the table, the active hours will start counting after 2 to 3 hours, so be patient. Congratulations, your masternode is now running.
+12. Read this step only if you want to setup (more) Multiple Masternodes: type getaccountaddress alias. Here alias can be mn2 as in previous masternode setup we used alias mn1.
+send 10000 coins to this new address, you can see this address if you click on File dropdown menu of the wallet and click on receiving address.
+Wait for 1 confirmation, then type masternode genkey, you will get the private key for the new masternode. Then follow step 8 to add one more line in the masternode.conf file with your new alias mn2 followed by the same IP an dsame port 7119, then the new masternode's private key, then transaction ID which you can get by using command masternode outputs, then the collateral_output_index
+example: If you have this already in Masternode.conf file
 
+mn1 127.0.0.2:7119 93HaYBVUCYjEMeeH1Y4sBGLALQZE1Yc1K64xiqgX37tGBDQL8Xg 2bcd3c84c84f87eaa86e4e56834c92927a07f9e18718810b92e0d0324456a67c 0
+you need to write now this line for second masternode setup:
+mn2 127.0.0.2:7119 96OGEUVUCdfdTYTfsfsRTRTRhghgh7565JJHJHJ45454Sdsd 456utghj49586uiegjretu845jglkjy9045jkgljy945jglkdjhrlkt9kjlwlr55 1
 
-------------------------------------
-Multiple Masternodes setup Guide
-------------------------------------
-Step-by-step guide for starting multiple masternodes (3 masternodes in this example)
-Requirements
- - Tokugawa wallet running on your local computer with at least 2500 Tokugawa coins for every masternode 
- - white static IP with open ports for masternodes
+After this you can close the Masternode.conf and restart wallet. Do not forget, you should restart wallet every time you make changes to conf files. Once wallet is started, you can go to masternodes section in wallet and right click on the new masternode that is showing up in the table. As you right click, a new window will show start alias, you can click on this start alias.
+This way you can make more masternodes. It is suggested to make 5 to 6 masternodes in each wallet. For setting up more masternodes, you can buy more VPS.
 
-1.Open and Run the Tokugawa-qt.exe wallet for the first time.  
-2.Your firewall and antivirus might pop up to allow connection. Please allow the connections by making appropriate tick marks.
-3.In the lower left hand corner of the User Interface, you will see “Synchronizing with network” and other sync messages each time you open your Tokugawa Wallet. If there is a problem synchronizing, it may say “No Block Source Available” instead. If this happens, just close and re-open the wallet until it synchronizes. 
-
-STEP 1 : Preparing masternodes
-1 - Choose the place where you will hold your masternodes dirs (you need 1Gb free space for every masternode)
-2 - Create folder "TokugawaMN1" there (example in C: drive)
-3 - Copy file "Tokugawa-qt.exe" in folder "TokugawaMN1"
-4 - Create in folder "TokugawaMN1" new folder "data"
-Tokugawa folder is located at C:/users/***Your windows username***/appdata(hidden)/roaming/Tokugawa
-5 - Copy file "blk0001.dat" and folder "txleveldb" from the above folder into the created folder "data" 
-6 - Rename "Tokugawa-qt.exe" to the "Tokugawa-mn1.exe" 
-7 - Press Win+R and type "cmd" and press Enter
-8 - Now type there:
-echo start Tokugawa-mn1.exe -datadir=./data > %homepath%/Desktop/startmn1.cmd
-9 - Move file "startmn1.cmd" from Desktop to the "TokugawaMN1" folder
-10 - Repeat the process from step 2 for each masternode you want to created, with changing mn1 to mn2, mn3
-11 - Run startmn1.cmd, startmn2.cmd and startmn3.cmd, wait for complete loading wallets and complete syncing with blockchain
-12 - Now you can exit from each running masternode wallets
-
-Now you can follow the same steps of single masternode guide
-4.Go to Help -> Debug Console.
-5.In the Console window enter getaccountaddress 0 and copy the result. This is your MASTERNODE DEPOSIT ADDRESS, where you will deposit the coins to create a masternode. Pay 2500 Tokugawa exactly into this address. No more, no less.
--·Wait for the 1 confirmation of the transaction.
-6.In the Console Debug window enter masternode genkey and copy the result. This is your MASTERNODE PRIVKEY.
-7.Open Configuration File in Notepad. This config file is located at C:/users/***Your windows username***/appdata(hidden)/roaming/Tokugawa  Then paste in the following.
-
-rpcuser=ANYTHINGHERE
-rpcpassword=ANYTHINGHERE
-rpcallowip=127.0.0.1
-externalip=your_vps_ip_address
-rpcport=21117
-listen=1
-server=1
-daemon=1
-port=21117
-masternode=1
-masternodeaddr=YourIP:21117
-masternodeprivkey=PRIVATEKEYREPLACETHIS
-
-8.Now save and close the config file.
-9.Close the wallet by going to File -> Exit.
-Open the Tokugawa Wallet again by running Tokugawa-qt.exe. This is how you will always start the wallet going forward.
-10. Wait for 15 confirmations of the transaction of 2500 coins.
-Go to Tools -> Debug Console. Enter "masternode start" in all the wallet's consoles. You will see the response “Masternode started successfully”. Congratulations, your masternode is now running.
-All masternodes need to be active for a certain amount of blocks before they are recognized by the network and eligible for rewards.
