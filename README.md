@@ -18,8 +18,8 @@ Stake Minimum Age: 24 Hours
 
 3 MegaByte Maximum Block Size (40X Bitcoin Core)
 
-Port: 21117
-RPC Port: 21116
+Port: 7119
+RPC Port: 7119
 
 Magic Bytes: 0x7e 0xcd 0x1c 0x23
 
